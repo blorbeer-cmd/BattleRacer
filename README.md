@@ -174,6 +174,8 @@ BattleRacer/
 
 ## 9. Roadmap / Meilensteine
 
+> 📋 Die detaillierte, nach Abarbeitungsreihenfolge sortierte Anforderungsliste steht in [ANFORDERUNGEN.md](ANFORDERUNGEN.md).
+
 1. **M1 — Fahrgefühl (der wichtigste Meilenstein):** Ein Kart auf einer Testfläche, Gamepad-Steuerung, Drift + Mini-Turbo. *So lange iterieren, bis es sich gut anfühlt — alles andere baut darauf auf.*
 2. **M2 — Netzwerk-Skelett:** Lobby, LAN-Discovery, 16 Karts synchronisiert (Prediction + Interpolation), Test mit mehreren Rechnern
 3. **M3 — Rennen:** Erste echte Strecke, Checkpoints, Runden, Platzierung, Ziel-Wertung, Respawn

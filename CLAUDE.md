@@ -8,6 +8,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Die `README.md` ist das verbindliche Konzept- und Architekturdokument: Sie legt Engine-Wahl, Netzwerk-Architektur, Physik-Ansatz, Art-Direction und die Meilenstein-Roadmap (M1–M7) fest. Bei Architektur-Fragen zuerst dort nachschlagen; Änderungen an Grundsatzentscheidungen gehören auch dort hinein.
 
+Die `ANFORDERUNGEN.md` ist der Arbeitsplan: alle Anforderungen (A-xxx) nach Abarbeitungsreihenfolge in Phasen 0–8, plus Querschnitts-Anforderungen (Q-xxx), die dauerhaft gelten. Beim Umsetzen einer Anforderung deren Status-Spalte pflegen (⬜ → 🔄 → ✅) und die Anforderungs-ID in der Commit-Message nennen.
+
 **Aktueller Stand:** Konzeptphase. Das Repo enthält noch kein Godot-Projekt (`project.godot` existiert nicht). Der erste Implementierungs-Meilenstein ist M1 (Fahrgefühl): ein Kart auf einer Testfläche mit Gamepad-Steuerung, Drift und Mini-Turbo. Beim Anlegen des Godot-Projekts: `project.godot` ins Repo-Root, Struktur wie in README Abschnitt 8.
 
 ## Kommandos
