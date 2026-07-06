@@ -17,10 +17,10 @@ Die Phasen entsprechen den Meilensteinen M1–M7 aus der [README](README.md#9-ro
 
 | ID | Prio | Status | Anforderung |
 |---|---|---|---|
-| **A-001** | 🔴 | ⬜ | **Godot-Projekt anlegen:** `project.godot` im Repo-Root, Ordnerstruktur gemäß README Abschnitt 8, Physik-Tickrate auf 120 Hz, Hauptszene = Startmenü-Platzhalter |
-| **A-002** | 🔴 | ⬜ | **Input-Map definieren:** Aktionen `accelerate`, `brake`, `steer_left`, `steer_right`, `drift`, `use_item`, `look_back`, `pause` — jeweils mit Gamepad- UND Tastatur-Belegung; analoge Lenkung mit Deadzone |
-| **A-003** | 🔴 | ⬜ | **Tooling einrichten:** GUT-Framework unter `addons/gut/`, `tests/`-Ordner mit einem Smoke-Test, gdtoolkit-Konfiguration (`gdformat`/`gdlint`), `.gitattributes` für Git LFS |
-| **A-004** | 🟡 | ⬜ | **Export-Presets:** `export_presets.cfg` für Windows + Linux, Build-Skript das beide Zips erzeugt — von Anfang an, damit Builds nie "Überraschung kurz vor der LAN" sind |
+| **A-001** | 🔴 | 🔄 | **Godot-Projekt anlegen:** `project.godot` im Repo-Root, Ordnerstruktur gemäß README Abschnitt 8, Physik-Tickrate auf 120 Hz, Hauptszene = Startmenü-Platzhalter — angelegt, **noch nicht in einem echten Godot-Editor geöffnet/verifiziert** (siehe Hinweis unten) |
+| **A-002** | 🔴 | 🔄 | **Input-Map definieren:** Aktionen `accelerate`, `brake`, `steer_left`, `steer_right`, `drift`, `use_item`, `look_back`, `pause` — jeweils mit Gamepad- UND Tastatur-Belegung; analoge Lenkung mit Deadzone — Bindings in `project.godot` hinterlegt, Parsing noch nicht im Editor bestätigt |
+| **A-003** | 🔴 | 🔄 | **Tooling einrichten:** `.gitattributes` für Git LFS ✅, `tests/`-Ordner mit Anleitung ✅, gdtoolkit installiert ✅ — **GUT-Framework unter `addons/gut/` fehlt noch** (Installation nur per Godot-Editor-AssetLib möglich, siehe `tests/README.md`) |
+| **A-004** | 🟡 | ⬜ | **Export-Presets:** `export_presets.cfg` für Windows + Linux, Build-Skript das beide Zips erzeugt — von Anfang an, damit Builds nie "Überraschung kurz vor der LAN" sind. Erfordert lokal installierte Export-Templates, daher bewusst erst beim ersten echten Editor-Öffnen angelegt |
 
 ---
 
