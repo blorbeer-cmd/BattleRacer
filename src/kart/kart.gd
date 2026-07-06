@@ -10,6 +10,11 @@ signal drift_ended(boost_applied: bool)
 signal mini_turbo_charged(stage: int)
 signal respawned
 
+## Verstärkt den Radeinschlagswinkel zur tatsächlichen Gier-Drehrate
+## (Radiant/Sekunde) — ohne diesen Faktor ist die Wendigkeit bei
+## niedriger/mittlerer Geschwindigkeit kaum spürbar.
+const TURN_RATE_GAIN: float = 4.0
+
 @export var handling: KartHandling
 @export var visual_root_path: NodePath
 @export var wheel_ray_fl: NodePath
@@ -166,10 +171,10 @@ func _apply_steering(delta: float) -> void:
 	_steering_angle = move_toward(_steering_angle, target_angle, handling.steering_speed * delta)
 
 	var forward_speed: float = linear_velocity.dot(-global_transform.basis.z)
-	var speed_ratio: float = clampf(forward_speed / handling.max_speed, -1.0, 1.0)
-	var turn_rate: float = _steering_angle * speed_ratio
+	var speed_ratio: float = clampf(absf(forward_speed) / handling.max_speed, 0.3, 1.0)
+	var turn_rate: float = _steering_angle * TURN_RATE_GAIN * speed_ratio
 	var active_grip: float = handling.drift_grip if _is_drifting else handling.grip
-	angular_velocity.y = move_toward(angular_velocity.y, turn_rate, active_grip * delta)
+	angular_velocity.y = move_toward(angular_velocity.y, turn_rate, active_grip * 3.0 * delta)
 
 
 func _apply_lateral_grip(delta: float) -> void:

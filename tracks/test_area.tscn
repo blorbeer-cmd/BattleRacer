@@ -95,5 +95,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, -20)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 10)
 
 [node name="ChaseCamera" parent="." instance=ExtResource("2")]
-target = NodePath("../Kart")
+target_path = NodePath("../Kart")
 current = true

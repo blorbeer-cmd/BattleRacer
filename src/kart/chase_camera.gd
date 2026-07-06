@@ -3,7 +3,7 @@ extends Camera3D
 ## Weiche Verfolgerkamera (A-014): folgt Position/Rotation des Ziels
 ## unabhängig von dessen Roll/Physik-Taumeln, zieht bei Boost das FOV auf.
 
-@export var target: Kart
+@export var target_path: NodePath
 @export var distance: float = 6.0
 @export var height: float = 2.5
 @export var look_height: float = 1.0
@@ -13,7 +13,12 @@ extends Camera3D
 @export var boost_fov: float = 82.0
 @export var fov_speed: float = 40.0
 
+var target: Kart
 var _look_back: bool = false
+
+
+func _ready() -> void:
+	target = get_node_or_null(target_path) as Kart
 
 
 func _physics_process(delta: float) -> void:
