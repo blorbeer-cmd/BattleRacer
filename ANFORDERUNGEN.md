@@ -169,6 +169,7 @@ Die Phasen entsprechen den Meilensteinen M1–M7 aus der [README](README.md#9-ro
 | **Q-003** | 🔴 | **Datengetriebenes Balancing:** Fahrverhalten, Item-Wahrscheinlichkeiten, Punktevergabe ausschließlich in `.tres`-Resources — nie im Code |
 | **Q-004** | 🔴 | **Deterministische Logik ist GUT-getestet:** Rundenzählung, Platzierung, Item-Verteilung, Punktewertung haben Unit-Tests, bevor die Phase als fertig gilt |
 | **Q-005** | 🔴 | **Multiinstanz-Pflichttest:** Jede Änderung an Netzwerk-Code oder replizierten Eigenschaften wird mit Host + min. 2 Clients verifiziert |
+| **Q-008** | 🟡 | **Input-Provider-Pattern für Physik-Regressionstests:** Kart-Controller kapselt Eingaben hinter einer austauschbaren Schnittstelle (siehe CLAUDE.md), damit Topspeed/Boost/Beschleunigung headless per GUT gegen die Handling-Resource geprüft werden können — ersetzt nicht das manuelle Gegenspielen des Fahrgefühls |
 | **Q-006** | 🔴 | **Urheberrecht:** Alle Charaktere, Namen, Musik und Assets sind Eigenkreationen oder nachweislich frei lizenziert — keine geschützten Originalfiguren, auch nicht als Platzhalter |
 | **Q-007** | 🟡 | **60-FPS-Budget:** Neue Features/Assets dürfen die Ziel-Framerate auf dem Referenzgerät nicht unterschreiten |
 

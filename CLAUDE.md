@@ -10,7 +10,7 @@ Die `README.md` ist das verbindliche Konzept- und Architekturdokument: Sie legt 
 
 Die `ANFORDERUNGEN.md` ist der Arbeitsplan: alle Anforderungen (A-xxx) nach Abarbeitungsreihenfolge in Phasen 0–8, plus Querschnitts-Anforderungen (Q-xxx), die dauerhaft gelten. Beim Umsetzen einer Anforderung deren Status-Spalte pflegen (⬜ → 🔄 → ✅) und die Anforderungs-ID in der Commit-Message nennen.
 
-**Aktueller Stand:** Konzeptphase. Das Repo enthält noch kein Godot-Projekt (`project.godot` existiert nicht). Der erste Implementierungs-Meilenstein ist M1 (Fahrgefühl): ein Kart auf einer Testfläche mit Gamepad-Steuerung, Drift und Mini-Turbo. Beim Anlegen des Godot-Projekts: `project.godot` ins Repo-Root, Struktur wie in README Abschnitt 8.
+**Aktueller Stand:** Phase 0 (Fundament) ist angelegt: `project.godot` mit Input-Map, Ordnerstruktur, Platzhalter-Hauptmenü. **Das GUT-Testframework fehlt noch** (`addons/gut/`) — muss einmalig über die Godot-Editor-AssetLib installiert werden (siehe `tests/README.md`), da es sich nicht per Kommandozeile/CI-Sandbox nachladen lässt, ohne dass es im Repo committet ist. Der erste Implementierungs-Meilenstein ist M1 (Fahrgefühl): ein Kart auf einer Testfläche mit Gamepad-Steuerung, Drift und Mini-Turbo.
 
 ## Kommandos
 
@@ -61,6 +61,7 @@ godot --headless --export-release "Linux" build/battleracer-linux.x86_64
 - **Raycast-Kart auf `RigidBody3D`** — bewusst NICHT Godots `VehicleBody3D` (auf Realismus ausgelegt, lässt sich nicht auf Arcade-Gefühl tunen). Die Physik fährt einen unsichtbaren Körper, das sichtbare Kart-Mesh wird rein optisch nachgeführt (Neigung, Drift-Winkel, Federung).
 - **Handling ist datengetrieben:** Alle Tuning-Parameter (Topspeed, Beschleunigung, Lenkwinkel, Drift-Grip, Gewichtsklasse) leben in `Resource`-Dateien (`.tres`) pro Kart/Charakter, nicht als Konstanten im Code. Balancing-Änderungen dürfen nie Code-Änderungen erfordern.
 - Drift + Mini-Turbo (Funken-Stufen, Boost beim Lösen) ist das Herzstück des Handlings — Änderungen daran immer manuell mit Gamepad gegenspielen, nicht nur Tests laufen lassen.
+- **Eingabe hinter einem Input-Provider kapseln:** Der Kart-Controller liest Eingaben nie direkt über `Input.get_action_strength()`/`Input.is_action_pressed()`, sondern über eine austauschbare Schnittstelle (z. B. `KartInputSource`). Die reale Implementierung liest den `Input`-Singleton, eine Test-Implementierung setzt Werte synthetisch. Damit lassen sich Physik-Regressionen (Topspeed, Boost-Betrag, Beschleunigungskurve) headless in GUT testen, indem Physik-Frames manuell getaktet werden — ohne echtes Gamepad. **Das ersetzt nicht das manuelle Gegenspielen:** Automatisierte Tests fangen numerische Regressionen ("Update verdoppelt versehentlich die Topspeed"), aber nicht die subjektive Frage, ob sich das Fahren gut anfühlt.
 
 ### Strecken & Rennlogik (src/track/)
 
@@ -87,9 +88,13 @@ godot --headless --export-release "Linux" build/battleracer-linux.x86_64
 
 ## Tests & Verifikation
 
-- **GUT-Tests unter `tests/`** für deterministische Kernlogik: Rundenzählung, Checkpoint-Sequenzen, Item-Verteilung, Platzierungsberechnung, Punktewertung. Diese Logik so schreiben, dass sie ohne laufende Szene testbar ist (reine Klassen/Funktionen, Physik und Rendering entkoppelt).
-- Fahrgefühl und Netzwerkverhalten sind **nicht** unit-testbar: Handling-Änderungen mit Gamepad gegenspielen, Netzwerk-Änderungen mit mehreren Instanzen (Host + min. 2 Clients) verifizieren.
-- Vor jedem Push: `gdlint` + kompletter GUT-Lauf grün.
+Bewusste Dreiteilung — nicht alles ist gleich testbar, aber mehr als "nur Fahrgefühl" ist automatisierbar:
+
+1. **Deterministische Kernlogik → GUT-Unit-Tests unter `tests/`:** Rundenzählung, Checkpoint-Sequenzen, Item-Verteilung, Platzierungsberechnung, Punktewertung. Reine Klassen/Funktionen, ohne laufende Szene testbar.
+2. **Physik-Korrektheit → GUT-Integrationstests mit manuell getakteten Physik-Frames:** Über den Input-Provider (siehe Fahrphysik-Abschnitt) synthetische Eingaben simulieren und nach N Frames Zustände prüfen — Topspeed-Obergrenze eingehalten, Boost-Betrag stimmt mit der Handling-Resource überein, keine NaN/Explosionen, Offroad bremst wie konfiguriert. Das fängt **Regressionen in Zahlen**, nicht das Spielgefühl.
+3. **Subjektives Fahrgefühl und Netzwerkverhalten unter echter Last → nicht automatisierbar:** Ob Drift/Mini-Turbo Spaß machen, lässt sich erst beurteilen, sobald ein spielbares Kart existiert — dafür immer manuell mit Gamepad gegenspielen. Netzwerk-Änderungen mit mindestens Host + 2 Client-Instanzen verifizieren.
+
+Vor jedem Push: `gdlint` + kompletter GUT-Lauf grün (lokal oder über die CI-Pipeline unter `.github/workflows/ci.yml`, die Lint und — sobald `addons/gut/` committet ist — die Tests bei jedem Push/PR automatisch ausführt).
 
 ## Assets
 

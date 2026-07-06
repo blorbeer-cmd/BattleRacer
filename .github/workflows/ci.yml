@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  lint:
+    name: gdformat / gdlint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install gdtoolkit
+        run: pip install "gdtoolkit==4.*"
+
+      - name: gdformat --check
+        run: gdformat --check src/ tests/
+
+      - name: gdlint
+        run: gdlint src/ tests/
+
+  test:
+    name: GUT tests (headless)
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.3
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Import project
+        run: godot --headless --import
+
+      - name: Run GUT tests
+        run: |
+          if [ -d addons/gut ]; then
+            godot --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests -ginclude_subdirs -gexit
+          else
+            echo "::warning::addons/gut fehlt noch im Repo (siehe tests/README.md) - Testlauf wird übersprungen."
+          fi
