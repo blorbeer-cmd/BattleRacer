@@ -24,6 +24,7 @@ enum WeightClass { LIGHT, MEDIUM, HEAVY }
 @export var drift_grip: float = 4.0
 @export var drift_steering_multiplier: float = 1.5
 @export var drift_min_speed: float = 6.0
+@export var drift_hop_impulse: float = 4.0
 
 @export_group("Mini-Turbo")
 @export var mini_turbo_stage1_time: float = 0.8

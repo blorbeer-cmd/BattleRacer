@@ -16,6 +16,7 @@ grip = 12.0
 drift_grip = 5.0
 drift_steering_multiplier = 1.6
 drift_min_speed = 5.0
+drift_hop_impulse = 5.0
 mini_turbo_stage1_time = 0.7
 mini_turbo_stage2_time = 1.4
 mini_turbo_boost_stage1 = 6.0

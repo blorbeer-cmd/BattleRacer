@@ -19,6 +19,7 @@ linear_damp = 0.05
 script = ExtResource("1")
 handling = ExtResource("2")
 visual_root_path = NodePath("Visual")
+visual_mesh_path = NodePath("Visual/MeshInstance3D")
 wheel_ray_fl = NodePath("WheelFL")
 wheel_ray_fr = NodePath("WheelFR")
 wheel_ray_rl = NodePath("WheelRL")

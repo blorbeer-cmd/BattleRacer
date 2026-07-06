@@ -15,8 +15,18 @@ signal respawned
 ## niedriger/mittlerer Geschwindigkeit kaum spürbar.
 const TURN_RATE_GAIN: float = 4.0
 
+## Nur Platzhalter-Feedback, bis in Phase 6 (A-063) echte Funken-VFX
+## kommen: färbt das Platzhalter-Mesh je Mini-Turbo-Stufe ein, damit sich
+## das Drift-Timing schon jetzt beurteilen lässt.
+const DRIFT_STAGE_COLORS: Array[Color] = [
+	Color(0.0, 0.0, 0.0),
+	Color(0.2, 0.5, 1.0),
+	Color(1.0, 0.55, 0.1),
+]
+
 @export var handling: KartHandling
 @export var visual_root_path: NodePath
+@export var visual_mesh_path: NodePath
 @export var wheel_ray_fl: NodePath
 @export var wheel_ray_fr: NodePath
 @export var wheel_ray_rl: NodePath
@@ -26,6 +36,7 @@ const TURN_RATE_GAIN: float = 4.0
 var input_source: KartInputSource = PlayerInputSource.new()
 
 var _visual_root: Node3D
+var _visual_material: StandardMaterial3D
 var _wheel_ray_nodes: Array[RayCast3D] = []
 var _steering_angle: float = 0.0
 var _grounded: bool = false
@@ -51,6 +62,29 @@ func _ready() -> void:
 	if handling != null:
 		mass = handling.mass_kg
 	_last_safe_transform = global_transform
+
+	var visual_mesh: MeshInstance3D = get_node_or_null(visual_mesh_path) as MeshInstance3D
+	if visual_mesh != null:
+		var base_material: Material = visual_mesh.get_surface_override_material(0)
+		if base_material is StandardMaterial3D:
+			_visual_material = (base_material as StandardMaterial3D).duplicate()
+			visual_mesh.set_surface_override_material(0, _visual_material)
+
+	mini_turbo_charged.connect(_on_mini_turbo_charged)
+	drift_ended.connect(_on_drift_ended)
+
+
+func _on_mini_turbo_charged(stage: int) -> void:
+	if _visual_material == null:
+		return
+	_visual_material.emission_enabled = stage > 0
+	_visual_material.emission = DRIFT_STAGE_COLORS[clampi(stage, 0, DRIFT_STAGE_COLORS.size() - 1)]
+	_visual_material.emission_energy_multiplier = 2.0
+
+
+func _on_drift_ended(_boost_applied: bool) -> void:
+	if _visual_material != null:
+		_visual_material.emission_enabled = false
 
 
 func _physics_process(delta: float) -> void:
@@ -172,7 +206,8 @@ func _apply_steering(delta: float) -> void:
 
 	var forward_speed: float = linear_velocity.dot(-global_transform.basis.z)
 	var speed_ratio: float = clampf(absf(forward_speed) / handling.max_speed, 0.3, 1.0)
-	var turn_rate: float = _steering_angle * TURN_RATE_GAIN * speed_ratio
+	var direction_sign: float = signf(forward_speed) if absf(forward_speed) > 0.05 else 1.0
+	var turn_rate: float = _steering_angle * TURN_RATE_GAIN * speed_ratio * direction_sign
 	var active_grip: float = handling.drift_grip if _is_drifting else handling.grip
 	angular_velocity.y = move_toward(angular_velocity.y, turn_rate, active_grip * 3.0 * delta)
 
@@ -229,6 +264,7 @@ func _start_drift(direction: float) -> void:
 	_drift_direction = direction
 	_drift_charge_time = 0.0
 	_drift_stage = 0
+	apply_central_impulse(Vector3.UP * handling.drift_hop_impulse * mass)
 	drift_started.emit()
 
 
