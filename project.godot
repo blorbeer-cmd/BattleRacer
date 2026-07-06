@@ -13,7 +13,7 @@ config_version=5
 config/name="BattleRacer"
 config/description="LAN-Party-Kart-Racer für bis zu 16 Spieler — Mario-Kart-64-Mechanik, moderner Comic-Look."
 run/main_scene="res://src/ui/main_menu.tscn"
-config/features=PackedStringArray("4.3", "GL Compatibility")
+config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [display]

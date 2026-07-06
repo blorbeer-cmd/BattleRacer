@@ -43,6 +43,14 @@ godot --headless --export-release "Linux" build/battleracer-linux.x86_64
 
 **Multiplayer lokal testen:** Im Godot-Editor *Debug → Customize Run Instances* → mehrere Instanzen aktivieren (eine als Host, weitere als Clients). Netzwerk-Code niemals nur mit einer Instanz "getestet" nennen — jede Änderung an `src/net/` oder an replizierten Eigenschaften mit mindestens Host + 2 Clients verifizieren.
 
+## Versionen von Engine & Drittkomponenten
+
+Godot, GUT und gdtoolkit entwickeln sich weiter — Versionsnummern in diesem Repo sind ein Snapshot vom Zeitpunkt der letzten Aktualisierung, kein fester Anker. **Vor jeder Änderung an einer Versionsnummer die tatsächlich aktuelle stabile Version recherchieren** (Websuche, nicht aus Trainingsdaten raten) und alle referenzierten Stellen konsistent aktualisieren:
+
+- **Godot-Engine-Version:** `project.godot` (`config/features`) und `.github/workflows/ci.yml` (Docker-Image-Tag `barichello/godot-ci:<version>`) müssen dieselbe Version nennen.
+- **GUT:** wird über die Godot-Editor-AssetLib installiert (siehe `tests/README.md`), die ohnehin die zur installierten Godot-Version passende neueste Version anbietet — keine Versionsnummer hart im Repo pinnen.
+- **gdtoolkit:** `pip install "gdtoolkit==4.*"` (siehe Kommandos) — der Major-Pin `4.*` folgt Godot 4, die Patch-Version hält pip automatisch aktuell.
+
 ## Architektur
 
 ### Netzwerk (src/net/) — das fehleranfälligste Subsystem
