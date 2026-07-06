@@ -10,7 +10,7 @@ Die `README.md` ist das verbindliche Konzept- und Architekturdokument: Sie legt 
 
 Die `ANFORDERUNGEN.md` ist der Arbeitsplan: alle Anforderungen (A-xxx) nach Abarbeitungsreihenfolge in Phasen 0–8, plus Querschnitts-Anforderungen (Q-xxx), die dauerhaft gelten. Beim Umsetzen einer Anforderung deren Status-Spalte pflegen (⬜ → 🔄 → ✅) und die Anforderungs-ID in der Commit-Message nennen.
 
-**Aktueller Stand:** Phase 0 (Fundament) ist angelegt: `project.godot` mit Input-Map, Ordnerstruktur, Platzhalter-Hauptmenü. **Das GUT-Testframework fehlt noch** (`addons/gut/`) — muss einmalig über die Godot-Editor-AssetLib installiert werden (siehe `tests/README.md`), da es sich nicht per Kommandozeile/CI-Sandbox nachladen lässt, ohne dass es im Repo committet ist. Der erste Implementierungs-Meilenstein ist M1 (Fahrgefühl): ein Kart auf einer Testfläche mit Gamepad-Steuerung, Drift und Mini-Turbo.
+**Aktueller Stand:** Phase 0 (Fundament) und der Kern von Phase 1 (Fahrgefühl) sind angelegt: `project.godot` mit Input-Map, Kart-Controller (`src/kart/kart.gd`) mit Raycast-Federung, Drift/Mini-Turbo, Handling-Resources (leicht/mittel/schwer), Verfolgerkamera, ein Boost-Pad-Baustein und `tracks/test_area.tscn`. **Nichts davon wurde bisher in einem echten Godot-Editor geöffnet oder mit Gamepad gegengespielt** — die Entwicklungsumgebung, in der dieser Stand entstand, hatte keinen Godot-Zugriff (siehe Kommandos-Abschnitt). Vor der nächsten Iteration: einmal lokal öffnen, `test_area.tscn` starten, Fahrgefühl bewerten und Parse-/Physik-Fehler zurückmelden. **Das GUT-Testframework fehlt noch** (`addons/gut/`) — muss einmalig über die Godot-Editor-AssetLib installiert werden (siehe `tests/README.md`).
 
 ## Kommandos
 

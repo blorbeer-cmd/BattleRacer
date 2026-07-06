@@ -1,0 +1,99 @@
+[gd_scene load_steps=15 format=3]
+
+[ext_resource type="PackedScene" path="res://src/kart/kart.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://src/kart/chase_camera.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://src/track/boost_pad.tscn" id="3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(100.0, 1.0, 100.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ground"]
+size = Vector3(100.0, 1.0, 100.0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ground"]
+albedo_color = Color(0.35, 0.55, 0.35, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_offroad"]
+size = Vector3(20.0, 1.0, 30.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_offroad"]
+size = Vector3(20.0, 1.0, 30.0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_offroad"]
+albedo_color = Color(0.5, 0.38, 0.22, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ramp"]
+size = Vector3(8.0, 0.5, 10.0)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ramp"]
+size = Vector3(8.0, 0.5, 10.0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ramp"]
+albedo_color = Color(0.6, 0.6, 0.65, 1)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
+sky_top_color = Color(0.3, 0.55, 0.85, 1)
+sky_horizon_color = Color(0.75, 0.8, 0.85, 1)
+ground_bottom_color = Color(0.3, 0.3, 0.3, 1)
+ground_horizon_color = Color(0.75, 0.8, 0.85, 1)
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("ProceduralSkyMaterial_sky")
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+sky = SubResource("Sky_main")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.5
+
+[node name="TestArea" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_main")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.8, -0.35, 0.48, 0, 0.8, 0.6, -0.6, -0.48, 0.64, 0, 10, 0)
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_ground")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh = SubResource("BoxMesh_ground")
+surface_material_override/0 = SubResource("StandardMaterial3D_ground")
+
+[node name="OffroadPatch" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 25, -0.4, 0)
+groups = ["offroad"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OffroadPatch"]
+shape = SubResource("BoxShape3D_offroad")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="OffroadPatch"]
+mesh = SubResource("BoxMesh_offroad")
+surface_material_override/0 = SubResource("StandardMaterial3D_offroad")
+
+[node name="Ramp" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.94, 0.342, 0, -0.342, 0.94, -20, 1.2, -15)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ramp"]
+shape = SubResource("BoxShape3D_ramp")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ramp"]
+mesh = SubResource("BoxMesh_ramp")
+surface_material_override/0 = SubResource("StandardMaterial3D_ramp")
+
+[node name="BoostPad" parent="." instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, -20)
+
+[node name="Kart" parent="." instance=ExtResource("1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 10)
+
+[node name="ChaseCamera" parent="." instance=ExtResource("2")]
+target = NodePath("../Kart")
+current = true

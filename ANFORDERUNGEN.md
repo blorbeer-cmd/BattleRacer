@@ -30,14 +30,14 @@ Die Phasen entsprechen den Meilensteinen M1–M7 aus der [README](README.md#9-ro
 
 | ID | Prio | Status | Anforderung |
 |---|---|---|---|
-| **A-010** | 🔴 | ⬜ | **Testfläche:** Graue Testszene mit Ebene, Rampen, Kurven-Parcours und einer Steilkurve — dient bis zum Projektende als Physik-Spielwiese |
-| **A-011** | 🔴 | ⬜ | **Raycast-Kart-Controller:** `RigidBody3D` mit Raycast-Federung; Gas, Bremse, Rückwärts, analoge Lenkung; sichtbares Kart-Mesh wird rein optisch nachgeführt (Neigung in Kurven, Federweg) |
-| **A-012** | 🔴 | ⬜ | **Handling-Resource:** Alle Fahrparameter (Topspeed, Beschleunigung, Lenkverhalten, Grip, Gewichtsklasse) als `.tres`-Resource; drei Beispielklassen leicht/mittel/schwer |
-| **A-013** | 🔴 | ⬜ | **Drift + Mini-Turbo:** Drift-Knopf mit Hop, gehaltener Drift lädt Funken-Stufen (2 Stufen wie MK64), Boost beim Lösen; Drift-Richtung unabhängig von Lenk-Feineinstellung |
-| **A-014** | 🔴 | ⬜ | **Verfolgerkamera:** Weiche Kamera hinter dem Kart, zieht bei Boost leicht auf (FOV), `look_back`-Taste für Rückblick |
-| **A-015** | 🔴 | ⬜ | **Grundlegende Fahr-Umgebungsregeln:** Offroad-Verlangsamung (abseits der Strecke), Wände mit sauberem Abprallen ohne Physik-Explosion, Kart kann nicht auf dem Dach landen (Auto-Aufrichten) |
-| **A-016** | 🔴 | ⬜ | **Respawn-Grundlage:** Fällt das Kart aus der Welt / in Todeszonen, wird es an definierter Position wieder eingesetzt (kurze Unverwundbarkeit + Geschwindigkeits-Reset) |
-| **A-017** | 🟡 | ⬜ | **Boost-Pads & Sprungschanzen** auf der Testfläche funktionsfähig |
+| **A-010** | 🔴 | 🔄 | **Testfläche:** Graue Testszene mit Ebene, Rampen, Kurven-Parcours und einer Steilkurve — dient bis zum Projektende als Physik-Spielwiese. `tracks/test_area.tscn` angelegt (Boden, Rampe, Offroad-Patch, Boost-Pad) — **noch nicht im Editor geöffnet/bespielt** |
+| **A-011** | 🔴 | 🔄 | **Raycast-Kart-Controller:** `RigidBody3D` mit Raycast-Federung; Gas, Bremse, Rückwärts, analoge Lenkung; sichtbares Kart-Mesh wird rein optisch nachgeführt (Neigung in Kurven, Federweg). `src/kart/kart.gd` + `kart.tscn` implementiert, GUT-Regressionstest vorhanden — **Fahrgefühl noch nicht mit Gamepad gegengespielt** |
+| **A-012** | 🔴 | ✅ | **Handling-Resource:** Alle Fahrparameter (Topspeed, Beschleunigung, Lenkverhalten, Grip, Gewichtsklasse) als `.tres`-Resource; drei Beispielklassen leicht/mittel/schwer — `src/kart/kart_handling.gd` + `handling/{light,medium,heavy}.tres` |
+| **A-013** | 🔴 | 🔄 | **Drift + Mini-Turbo:** Drift-Knopf mit Hop, gehaltener Drift lädt Funken-Stufen (2 Stufen wie MK64), Boost beim Lösen; Drift-Richtung unabhängig von Lenk-Feineinstellung — Zustandsmaschine implementiert, **Hop beim Drift-Einstieg fehlt noch** (springt aktuell direkt in den Drift ohne Hüpfer), Timing/Balance ungetestet |
+| **A-014** | 🔴 | 🔄 | **Verfolgerkamera:** Weiche Kamera hinter dem Kart, zieht bei Boost leicht auf (FOV), `look_back`-Taste für Rückblick — `chase_camera.gd`/`.tscn` implementiert, ungetestet |
+| **A-015** | 🔴 | 🔄 | **Grundlegende Fahr-Umgebungsregeln:** Offroad-Verlangsamung (abseits der Strecke), Wände mit sauberem Abprallen ohne Physik-Explosion, Kart kann nicht auf dem Dach landen (Auto-Aufrichten) — Offroad-Faktor + Auto-Aufrichten implementiert; Wand-Abprallverhalten läuft aktuell nur über Standard-`RigidBody3D`-Kollision, noch nicht gezielt gegen harte Einschläge getestet |
+| **A-016** | 🔴 | 🔄 | **Respawn-Grundlage:** Fällt das Kart aus der Welt / in Todeszonen, wird es an definierter Position wieder eingesetzt (kurze Unverwundbarkeit + Geschwindigkeits-Reset) — Fall-unter-Schwellwert löst Respawn zur letzten sicheren Transform aus; **kurze Unverwundbarkeit nach Respawn fehlt noch** |
+| **A-017** | 🟡 | 🔄 | **Boost-Pads & Sprungschanzen** auf der Testfläche funktionsfähig — `src/track/boost_pad.gd`/`.tscn` implementiert und in der Testfläche platziert; Sprungschanze bisher nur als statische Rampengeometrie ohne spezielles Tuning |
 | **A-018** | 🟢 | ⬜ | **Slipstream/Windschatten:** Hinter anderem Kart fahren lädt kurzen Boost auf (kann erst ab Phase 2 sinnvoll getestet werden) |
 
 **Phase fertig, wenn:** Zwei Personen sich den Controller aus der Hand reißen, weil das Fahren auf der Testfläche allein schon Spaß macht.

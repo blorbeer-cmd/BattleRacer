@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="KartHandling" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://src/kart/kart_handling.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+weight_class = 1
+max_speed = 22.0
+reverse_speed = 10.0
+acceleration = 14.0
+braking_force = 30.0
+natural_deceleration = 6.0
+max_steering_angle_deg = 32.0
+steering_speed = 6.0
+grip = 10.0
+drift_grip = 4.0
+drift_steering_multiplier = 1.5
+drift_min_speed = 6.0
+mini_turbo_stage1_time = 0.8
+mini_turbo_stage2_time = 1.6
+mini_turbo_boost_stage1 = 6.0
+mini_turbo_boost_stage2 = 10.0
+mini_turbo_boost_duration = 1.0
+mass_kg = 150.0
+suspension_stiffness = 60.0
+suspension_damping = 4.0
+offroad_speed_multiplier = 0.5
