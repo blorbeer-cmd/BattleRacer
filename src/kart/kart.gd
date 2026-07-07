@@ -12,8 +12,9 @@ signal respawned
 
 ## Verstärkt den Radeinschlagswinkel zur tatsächlichen Gier-Drehrate
 ## (Radiant/Sekunde) — ohne diesen Faktor ist die Wendigkeit bei
-## niedriger/mittlerer Geschwindigkeit kaum spürbar.
-const TURN_RATE_GAIN: float = 4.0
+## niedriger/mittlerer Geschwindigkeit kaum spürbar. Wert ist ein erster
+## Tuning-Versuch, kein feststehender Balance-Wert.
+const TURN_RATE_GAIN: float = 2.2
 
 ## Nur Platzhalter-Feedback, bis in Phase 6 (A-063) echte Funken-VFX
 ## kommen: färbt das Platzhalter-Mesh je Mini-Turbo-Stufe ein, damit sich
@@ -187,9 +188,6 @@ func _apply_drive(delta: float) -> void:
 
 
 func _apply_steering(delta: float) -> void:
-	if not _grounded:
-		return
-
 	var steering_input: float = input_source.get_steering()
 	var max_angle: float = deg_to_rad(handling.max_steering_angle_deg)
 	var target_angle: float = -steering_input * max_angle
@@ -209,7 +207,7 @@ func _apply_steering(delta: float) -> void:
 	var direction_sign: float = signf(forward_speed) if absf(forward_speed) > 0.05 else 1.0
 	var turn_rate: float = _steering_angle * TURN_RATE_GAIN * speed_ratio * direction_sign
 	var active_grip: float = handling.drift_grip if _is_drifting else handling.grip
-	angular_velocity.y = move_toward(angular_velocity.y, turn_rate, active_grip * 3.0 * delta)
+	angular_velocity.y = move_toward(angular_velocity.y, turn_rate, active_grip * 1.5 * delta)
 
 
 func _apply_lateral_grip(delta: float) -> void:
